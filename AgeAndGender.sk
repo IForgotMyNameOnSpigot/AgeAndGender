@@ -1,0 +1,631 @@
+# It is not recommended to use skript on your server.
+# This skript requires SkRayFall, SkQuery, SkStuff, SharpSK and Skript to work correctly.
+
+# ░█████╗░░█████╗░███╗░░██╗███████╗██╗░██████╗░██╗░░░██╗██████╗░░█████╗░████████╗██╗░█████╗░███╗░░██╗
+# ██╔══██╗██╔══██╗████╗░██║██╔════╝██║██╔════╝░██║░░░██║██╔══██╗██╔══██╗╚══██╔══╝██║██╔══██╗████╗░██║
+# ██║░░╚═╝██║░░██║██╔██╗██║█████╗░░██║██║░░██╗░██║░░░██║██████╔╝███████║░░░██║░░░██║██║░░██║██╔██╗██║
+# ██║░░██╗██║░░██║██║╚████║██╔══╝░░██║██║░░╚██╗██║░░░██║██╔══██╗██╔══██║░░░██║░░░██║██║░░██║██║╚████║
+# ╚█████╔╝╚█████╔╝██║░╚███║██║░░░░░██║╚██████╔╝╚██████╔╝██║░░██║██║░░██║░░░██║░░░██║╚█████╔╝██║░╚███║
+# ░╚════╝░░╚════╝░╚═╝░░╚══╝╚═╝░░░░░╚═╝░╚═════╝░░╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝
+
+options:
+  Setup: &a&lAGE&f&lAND&c&lGENDER&f: &7Enter an age with &a/age &7and a gender with &a/gender&7!
+# Don't touch the version.
+  version: v1-STABLE
+  update-alerts: true
+# Titles options.
+  Using-Titles: false
+  Titles-Duration: 5 seconds
+  Age-Title: &a&lAGE
+  Age-Subtitle: &7You have successfully chosen the age &a%arg-1%&7!
+  Gender-Title: &c&lGENDER
+  Gender-Subtitle: &7You have set your gender in &a%arg-1%&7!
+# Gender options.
+  Gender-Usage: &c&lGENDER&f: &7Use &a/gender Male&7/&aFemale&7!
+  Gender-Success: &c&lGENDER&f: &7You have set your gender in &a%arg-1%&7!
+  Cancel-Gender-Message: &c&lGENDER&f: &cThis is not a valid gender! &7(Male / Female)
+# Age options.
+  Age-Usage: &a&lAGE&f: &7Use &a/age &7(5-80)&7!
+  Age-Success: &a&lAGE&f: &7You have successfully chosen the age &a%arg-1%&7!
+  Cancel-Age-Message: &a&lAGE&f: &cThe age must be 5-80 years!
+  min-age: 5
+  max-age: 80
+# Info options.
+  InfoMessage-1: &eName: &f%arg-1%
+  InfoMessage-2: &bAge: %{age::%player%}%
+  InfoMessage-3: &5Gender: %{gender::%player%}%
+# Chat options.
+  chat-format: %{gender::%player%}% &7[&a%{age::%player%}%&7] %display name of player% &8&l» &f%message%
+  chat-distance: 10 # The chat distance (in blocks).
+  Use-AntiSpam: true
+  AntiSpam-Cooldown: 1 second
+  AntiSpam-Message: &cYou don't have the permission to spam in the chat.
+  Prevent-/me-Command: true
+# Info and admin options.
+  AdminPermission: ageandgender.admin
+  NoPermission: &a&lAGE&f&lAND&c&lGENDER&f: &cYou don't have the permission to do this.
+  Cancel-Info-Message: &b&lINFO&f: &cUse &e/info &7(player)
+# Mask options.
+  Mask-Name: &6Mask
+  MaskReceived: &aA mask was added in your inventory!
+  chat-format-mask: &7&lANONYMOUS &8&l» &f%message%
+  chat-format-mask-scream: &7(&e&lSCREAM&7) &7&lANONYMOUS &8&l» &f%arg 1%
+  chat-format-mask-whisper: &7(&e&lSCREAM&7) &7&lANONYMOUS &8&l» &f%arg 1%
+# Scream options.
+  scream-distance: 13
+  scream-format: &7(&e&lSCREAM&7) &f%{gender::%player%}% &7[&a%{age::%player%}%&7] %display name of player% &8&l» &f%arg 1%
+  scream-usage: &eUse: &7/scream (text)
+# Whisper options.
+  whisper-distance: 5
+  whisper-format: &7(&e&lWHISPER&7) &f%{gender::%player%}% &7[&a%{age::%player%}%&7] %display name of player% &8&l» &f%arg 1%
+  whisper-usage: &eUse: &7/whisper (text)
+
+
+
+# DON'T EDIT IF YOU DON'T KNOW WHAY ARE YOU DOING.
+# DON'T EDIT IF YOU DON'T KNOW WHAY ARE YOU DOING.
+# DON'T EDIT IF YOU DON'T KNOW WHAY ARE YOU DOING.
+# DON'T EDIT IF YOU DON'T KNOW WHAY ARE YOU DOING.
+# DON'T EDIT IF YOU DON'T KNOW WHAY ARE YOU DOING.
+# DON'T EDIT IF YOU DON'T KNOW WHAY ARE YOU DOING.
+# DON'T EDIT IF YOU DON'T KNOW WHAY ARE YOU DOING.
+# DON'T EDIT IF YOU DON'T KNOW WHAY ARE YOU DOING.
+# DON'T EDIT IF YOU DON'T KNOW WHAY ARE YOU DOING.
+# DON'T EDIT IF YOU DON'T KNOW WHAY ARE YOU DOING.
+
+
+command /age <number>:
+	usage: {@Age-Usage}
+	aliases: /anni
+	executable by: players
+	trigger:
+		if arg-1 is set:
+			if argument 1 is smaller than {@max-age}:
+				if argument 1 is larger than {@min-age}:
+					if {@Using-Titles} is true:
+						send player title "{@Age-Title}" with subtitle "{@Age-Subtitle}" for {@Titles-Duration}
+						set {age::%player%} to arg-1
+						stop
+					else:
+						if {@Using-Titles} is false:
+							send "{@Age-Success}" to player
+							set {age::%player%} to arg-1
+							stop
+						else:
+							message "&cError in the config &7(The value must be &etrue &7or &efalse&7)&c!"
+							stop
+				else:
+					if argument 1 is {@min-age}:
+						if {@Using-Titles} is true:
+							send player title "{@Age-Title}" with subtitle "{@Age-Subtitle}" for {@Titles-Duration}
+							set {age::%player%} to arg-1
+							stop
+						else:
+							if {@Using-Titles} is false:
+								send "{@Age-Success}" to player
+								set {age::%player%} to arg-1
+								stop
+							else:
+								message "&cError in the config &7(The value must be &etrue &7or &efalse&7)&c!"
+								stop
+					else:
+						send "{@Cancel-Age-Message}" to player
+						stop
+			else:
+				if argument 1 is {@max-age}:
+					if {@Using-Titles} is true:
+						set {age::%player%} to arg-1
+						send player title "{@Age-Title}" with subtitle "{@Age-Subtitle}" for {@Titles-Duration}
+						stop
+					else:
+						send "{@Age-Success}" to player
+						set {age::%player%} to arg-1
+						stop
+				else:
+					send "{@Cancel-Age-Message}" to player
+					stop
+		else:
+			send "{@Age-Usage}" to player
+			stop
+command /gender <text>:
+	usage: {@Cancel-Gender-Message}
+	aliases: /genere, /sesso
+	executable by: players
+	trigger:
+		if arg-1 is "Maschio" or "Male":
+			if {@Using-Titles} is true:
+				set {gender::%player%} to "&b♂"
+				send player title "{@Gender-Title}" with subtitle "{@Gender-Subtitle}" for {@Titles-Duration}
+				stop
+			else:
+				if {@Using-Titles} is false:
+					set {gender::%player%} to "&b♂"
+					send "{@Gender-Success}" to player
+					stop
+				else:
+					message "&cError in the config &7(The value must be &etrue &7or &efalse&7)&c!"
+					stop
+		else:
+			if arg-1 is "Femmina" or "Female":
+				if {@Using-Titles} is true:
+					set {gender::%player%} to "&d♀"
+					send player title "{@Gender-Title}" with subtitle "{@Gender-Subtitle}" for {@Titles-Duration}
+					stop
+				else:
+					if {@Using-Titles} is false:
+						set {gender::%player%} to "&d♀"
+						send "{@Gender-Success}" to player
+						stop
+					else:
+						message "&cError in the config &7(The value must be &etrue &7or &efalse&7)&c!"
+						stop
+			else:
+				send "{@Cancel-Gender-Message}" to player
+				stop
+command /info <player>:
+	usage: {@Cancel-Info-Message}
+	executable by: players
+	aliases: /information, /informations, /informazioni
+	trigger:
+		if player has permission "{@AdminPermission}":
+			if arg-1 is online:
+				send "&8&m--------[&a&l INFO &8&m]--------" to player
+				send "{@InfoMessage-1}" to player
+				send "{@InfoMessage-2}" to player
+				send "{@InfoMessage-3}" to player
+				send "&8&m--------------------------------" to player
+			else:
+				send "&cUnable to find the player!" to player
+				stop
+		else:
+			send "{@NoPermission}" to player
+			stop
+on command "minecraft:me":
+	if {@Prevent-/me-Command} is true:
+		cancel event
+		message "&cCommand disabled by &aAGE AND GENDER&c System!"
+	else:
+		if {@Prevent-/me-Command} is false:
+			stop
+on command "me":
+	if {@Prevent-/me-Command} is true:
+		cancel event
+		message "&cCommand disabled by &aAGE AND GENDER&c System!"
+	else:
+		if {@Prevent-/me-Command} is false:
+			stop
+on chat:
+	if {@Use-AntiSpam} is true:
+		if {%player%.cooldown} is true:
+			send "{@AntiSpam-Message}"
+			cancel event
+			stop
+		else:
+			if display name of player's helm is "{@Mask-Name}":
+				hideNametag(player)
+				if {age::%player%} is set:
+					if {gender::%player%} is set:
+						cancel event
+						send "{@chat-format-mask}" to all players within {@chat-distance} meters of the player
+						set {%player%.cooldown} to true
+						wait {@AntiSpam-Cooldown}
+						clear {%player%.cooldown}
+						stop
+			else:
+				if {@Use-AntiSpam} is true:
+					if {%player%.cooldown} is true:
+						send "{@AntiSpam-Message}"
+						cancel event
+						stop
+					else:
+						if {gender::%player%} is set:
+							if {age::%player%} is set:
+								cancel event
+								send "{@chat-format}" to all players within {@chat-distance} meters of the player           
+								set {%player%.cooldown} to true
+								wait {@AntiSpam-Cooldown}
+								clear {%player%.cooldown}
+								stop
+							else:
+								cancel event
+								send "{@Setup}" to player
+								stop
+						else:
+							cancel event
+							send "{@Setup}" to player
+							stop
+				else:
+					if {@Use-AntiSpam} is false:
+						if {gender::%player%} is set:
+							if {age::%player%} is set:
+								cancel event
+								send "{@chat-format}" to all players within {@chat-distance} meters of the player
+								stop
+					else:
+						message "&cError in the config &7(The value must be &etrue &7or &efalse&7)&c!"
+						stop
+	else:
+		if display name of player's helm is "{@Mask-Name}":
+			hideNametag(player)
+			if {age::%player%} is set:
+				if {gender::%player%} is set:
+					cancel event
+					send "{@chat-format-mask}" to all players within {@chat-distance} meters of the player
+					stop
+command /getmask:
+	aliases: /ottienimaschera, /mask, /maschera, /anonymousmasks, /anonymousmask
+	executable by: players
+	trigger:
+		if player has permission "{@AdminPermission}":
+			add 1 leather helmet named "{@Mask-Name}" to the player
+			message "{@MaskReceived}"
+			stop
+		else:
+			message "{@NoPermission}"
+			stop
+on load:
+	wait 2 seconds
+	send " " to console
+	send "&8&m------------------------------" to console
+	send " &6&lAGE AND GENDER {@version}" to console
+	send " &aLoaded successfully!" to console
+	send "&8&m------------------------------" to console
+	send " " to console
+	if {@update-alerts} is true:
+		if text from "https://pastebin.com/raw/LDjhzzEM" is not "{@version}":
+			send "[AGEANDGENDER] &cVersion outdated! Download the newest version of AGE AND GENDER!" to console
+			stop
+		else:
+			send "[AGEANDGENDER] &aYou are up to date!" to console
+			stop
+	else:
+		stop
+command /ageandgendereload:
+	executable by: players
+	aliases: /aagr, /ageandgenderreload, /agreload, /aagreload, /agr
+	trigger:
+		if player has permission "{@AdminPermission}":
+			if {@update-alerts} is true:
+				if text from "https://pastebin.com/raw/LDjhzzEM" is not "{@version}":
+					send "&f[&7AGEANDGENDER&f] &aSkript reloaded successfully!" to player
+					wait 1 second
+					send "&8&m------------------------------" to console
+					send " &6&lAGE AND GENDER {@version}" to console
+					send " &7Reloading..." to console
+					send "&8&m------------------------------" to console
+					send "&f[&7AGEANDGENDER&f] &cVersion outdated! Download the newest version of AGE AND GENDER!" to player
+					reload script "AgeAndGender.sk"
+					stop
+				else:
+					send "&f[&7AGEANDGENDER&f] &aSkript reloaded successfully!" to player
+					wait 1 second
+					send "&8&m------------------------------" to console
+					send " &6&lAGE AND GENDER {@version}" to console
+					send " &7Reloading..." to console
+					send "&8&m------------------------------" to console
+					reload script "AgeAndGender.sk"
+					stop
+			else:
+				send "&f[&7AGEANDGENDER&f] &aSkript reloaded successfully!" to player
+				wait 1 second
+				send "&8&m------------------------------" to console
+				send " &6&lAGE AND GENDER {@version}" to console
+				send " &7Reloading..." to console
+				send "&8&m------------------------------" to console
+				reload script "AgeAndGender.sk"
+				stop
+		else:
+			send "{@NoPermission}" to player
+			stop
+on join:
+	if display name of player's helm is "{@Mask-Name}":
+		wait 11 ticks
+		hideNametag(player)
+		stop
+	else:
+		wait 12 ticks
+		showNametag(player)
+		stop
+	if player has permission "{@AdminPermission}":
+		if {@update-alerts} is true:
+			if text from "https://pastebin.com/raw/LDjhzzEM" is not "{@version}":
+				send "&f[&7AGEANDGENDER&f] &cVersion outdated! Download the newest version of AGE AND GENDER!" to player
+				stop
+			else:
+				stop
+		else:
+			stop
+	else:
+		stop
+
+command /scream [<text>]:
+	usage: {@scream-usage}
+	executable by: players
+	aliases: /urlo
+	trigger:
+		if arg-1 is set:
+			if {@Use-AntiSpam} is true:
+				if {%player%.cooldown} is true:
+					send "{@AntiSpam-Message}"
+					stop
+				else:
+					if display name of player's helm is "{@Mask-Name}":
+						hideNametag(player)
+						if {age::%player%} is set:
+							if {gender::%player%} is set:
+								if executor is not console:
+									loop all players:
+										if distance between executor and loop-players is less than {@scream-distance}:
+											send "{@chat-format-mask-scream}" to loop-players
+											send "{@chat-format-mask-scream}" to player
+											set {%player%.cooldown} to true
+											wait {@AntiSpam-Cooldown}
+											clear {%player%.cooldown}
+											stop
+										else:
+											if distance between executor and loop-player is {@scream-distance}:
+												send "{@chat-format-mask-scream}" to loop-players
+												send "{@chat-format-mask-scream}" to player
+												set {%player%.cooldown} to true
+												wait {@AntiSpam-Cooldown}
+												clear {%player%.cooldown}
+												stop
+											else:
+												send "{@chat-format-mask-scream}" to player
+												set {%player%.cooldown} to true
+												wait {@AntiSpam-Cooldown}
+												clear {%player%.cooldown}
+												stop
+					else:
+						if {@Use-AntiSpam} is true:
+							if {%player%.cooldown} is true:
+								send "{@AntiSpam-Message}"
+								stop
+							else:
+								if {gender::%player%} is set:
+									if {age::%player%} is set:
+										if executor is not console:
+											loop all players:
+												if distance between executor and loop-players is less than {@scream-distance}:
+													send "{@scream-format}" to loop-players
+													send "{@scream-format}" to player
+													set {%player%.cooldown} to true
+													wait {@AntiSpam-Cooldown}
+													clear {%player%.cooldown}
+													stop
+												else:
+													if distance between executor and loop-players is {@scream-distance}:
+														send "{@scream-format}" to loop-players
+														send "{@scream-format}" to player
+														set {%player%.cooldown} to true
+														wait {@AntiSpam-Cooldown}
+														clear {%player%.cooldown}
+														stop
+													else:
+														send "{@scream-format}" to player
+														set {%player%.cooldown} to true
+														wait {@AntiSpam-Cooldown}
+														clear {%player%.cooldown}
+														stop
+										stop
+									else:
+										send "{@Setup}" to player
+										stop
+								else:
+									send "{@Setup}" to player
+									stop
+						else:
+							if {@Use-AntiSpam} is false:
+								if {gender::%player%} is set:
+									if {age::%player%} is set:
+										if executor is not console:
+											loop all players:
+												if distance between executor and loop-players is less than {@scream-distance}:
+													send "{@scream-format}" to loop-players
+													send "{@scream-format}" to player
+													stop
+												else:
+													if distance between executor and loop-players is {@scream-distance}:
+														send "{@scream-format}" to loop-players
+														send "{@scream-format}" to player
+														stop
+													else:
+														send "{@scream-format}" to player
+														stop
+							else:
+								message "&cError in the config &7(The value must be &etrue &7or &efalse&7)&c!"
+								stop
+			else:
+				if display name of player's helm is "{@Mask-Name}":
+					hideNametag(player)
+					if {age::%player%} is set:
+						if {gender::%player%} is set:
+							if executor is not console:
+								loop all players:
+									if distance between executor and loop-player is less than {@scream-distance}:
+										send "{@chat-format-mask-scream}" to loop-player
+										send "{@chat-format-mask-scream}" to player
+										stop
+									else:
+										if distance between executor and loop-player is {@scream-distance}:
+											send "{@chat-format-mask-scream}" to loop-players
+											send "{@chat-format-mask-scream}" to player
+											stop
+										else:
+											send "{@chat-format-mask-scream}" to player
+											stop
+		else:
+			send "{@scream-usage}" to player
+			stop
+			
+command /whisper [<text>]:
+	usage: {@whisper-usage}
+	executable by: players
+	aliases: /urlo
+	trigger:
+		if arg-1 is set:
+			if {@Use-AntiSpam} is true:
+				if {%player%.cooldown} is true:
+					send "{@AntiSpam-Message}"
+					stop
+				else:
+					if display name of player's helm is "{@Mask-Name}":
+						hideNametag(player)
+						if {age::%player%} is set:
+							if {gender::%player%} is set:
+								if executor is not console:
+									loop all players:
+										if distance between executor and loop-players is less than {@whisper-distance}:
+											send "{@chat-format-mask-whisper}" to loop-players
+											send "{@chat-format-mask-whisper}" to player
+											set {%player%.cooldown} to true
+											wait {@AntiSpam-Cooldown}
+											clear {%player%.cooldown}
+											stop
+										else:
+											if distance between executor and loop-player is {@whisper-distance}:
+												send "{@chat-format-mask-whisper}" to loop-players
+												send "{@chat-format-mask-whisper}" to player
+												set {%player%.cooldown} to true
+												wait {@AntiSpam-Cooldown}
+												clear {%player%.cooldown}
+												stop
+											else:
+												send "{@chat-format-mask-whisper}" to player
+												set {%player%.cooldown} to true
+												wait {@AntiSpam-Cooldown}
+												clear {%player%.cooldown}
+												stop
+					else:
+						if {@Use-AntiSpam} is true:
+							if {%player%.cooldown} is true:
+								send "{@AntiSpam-Message}"
+								stop
+							else:
+								if {gender::%player%} is set:
+									if {age::%player%} is set:
+										if executor is not console:
+											loop all players:
+												if distance between executor and loop-players is less than {@whisper-distance}:
+													send "{@whisper-format}" to loop-players
+													send "{@whisper-format}" to player
+													set {%player%.cooldown} to true
+													wait {@AntiSpam-Cooldown}
+													clear {%player%.cooldown}
+													stop
+												else:
+													if distance between executor and loop-players is {@whisper-distance}:
+														send "{@whisper-format}" to loop-players
+														send "{@whisper-format}" to player
+														set {%player%.cooldown} to true
+														wait {@AntiSpam-Cooldown}
+														clear {%player%.cooldown}
+														stop
+													else:
+														send "{@whisper-format}" to player
+														set {%player%.cooldown} to true
+														wait {@AntiSpam-Cooldown}
+														clear {%player%.cooldown}
+														stop
+									else:
+										send "{@Setup}" to player
+										stop
+								else:
+									send "{@Setup}" to player
+									stop
+						else:
+							if {@Use-AntiSpam} is false:
+								if {gender::%player%} is set:
+									if {age::%player%} is set:
+										if executor is not console:
+											loop all players:
+												if distance between executor and loop-players is less than {@whisper-distance}:
+													send "{@whisper-format}" to loop-players
+													send "{@whisper-format}" to player
+													stop
+												else:
+													if distance between executor and loop-players is {@whisper-distance}:
+														send "{@whisper-format}" to loop-players
+														send "{@whisper-format}" to player
+														stop
+													else:
+														send "{@whisper-format}" to player
+														stop
+							else:
+								message "&cError in the config &7(The value must be &etrue &7or &efalse&7)&c!"
+								stop
+			else:
+				if display name of player's helm is "{@Mask-Name}":
+					hideNametag(player)
+					if {age::%player%} is set:
+						if {gender::%player%} is set:
+							if executor is not console:
+								loop all players:
+									if distance between executor and loop-player is less than {@whisper-distance}:
+										send "{@chat-format-mask-whisper}" to loop-player
+										send "{@chat-format-mask-whisper}" to player
+										stop
+									else:
+										if distance between executor and loop-player is {@whisper-distance}:
+											send "{@chat-format-mask-whisper}" to loop-players
+											send "{@chat-format-mask-whisper}" to player
+											stop
+										else:
+											send "{@chat-format-mask-whisper}" to player
+											stop
+		else:
+			send "{@whisper-usage}" to player
+			stop
+
+command /ageandgenderhelp:
+	executable by: players
+	aliases: /aagh, /agh, /aghelp, /aaghelp
+	trigger:
+		message "&8&m--------[&a&l HELP &8&m]--------"
+		message "&e/age &7({@min-age}-{@max-age})"
+		message "&e/gender &7(Male-Female-Maschio-Femmina)"
+		if player has permission "{@AdminPermission}":
+			message "&e/info &7(player)"
+			message "&e/aagreload"
+			message "&e/getmask"
+		message "&8&m--------[&a&l HELP &8&m]--------"
+		stop
+on armor equip:
+	wait 10 ticks
+	if display name of player's helm is "{@Mask-Name}":
+		hideNametag(player)
+		stop
+
+on armor unequip:
+	if display name of player's helm is "{@Mask-Name}":
+		showNametag(player)
+		stop
+
+function hideNametag(p: player):
+	if {npc::%{_p}%} is set:
+		kill {npc::%{_p}%}
+	spawn an armor stand at location of {_p}
+	add "{Invisible:1b,Marker:1b,Invulnerable:1b}" to last spawned entity's nbt
+	make last spawned entity ride {_p}
+
+function showNametag(p: player):   
+	if {npc::%{_p}%} exists:
+		eject any passengers from {_p}
+		kill {npc::%{_p}%}
+		delete {npc::%{_p}%}
+	else:
+		eject any passengers from {_p}
+		kill {npc::%{_p}%}
+		delete {npc::%{_p}%}
+on unload:
+	if {npc::%{_p}%} exists:
+		eject any passengers from {_p}
+		kill {npc::%{_p}%}
+		delete {npc::%{_p}%}
+	send "&8&m------------------------------" to console
+	send " &6&lAGE AND GENDER {@version}" to console
+	send " &cDisabled successfully..." to console
+	send "&8&m------------------------------" to console
+	stop
+
+# DON'T SKID.
